@@ -59,6 +59,14 @@ functions:
           method: put
           cors: true
 
+  updateRunCount:
+    handler: handler.updateRunCount
+    events:
+      - http:
+          path: updateRunCount/{id}
+          method: put
+          cors: true
+
 resources: # CloudFormation template syntax from here on.
   Resources:
     codeDynamoDBTable: 

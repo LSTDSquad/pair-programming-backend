@@ -23,6 +23,8 @@ module.exports.setData =(event, context, callback) => {
       		"Access-Control-Allow-Origin": "*",
      		"Access-Control-Allow-Credentials": true};
 
+  console.log(data);
+
 	dynamoDb.put(params, (error, data) => {
 	 	
     if (error) {
@@ -77,7 +79,6 @@ module.exports.getData = (event, context, callback) => {
 module.exports.updateData = (event, context, callback) => {
 
 	//update data in exisitng entry in the dynamoDB table by sessionID
-
 	const data = JSON.parse(event.body);
 	const params = {
 		TableName: process.env.DATA_TABLE,
@@ -93,6 +94,7 @@ module.exports.updateData = (event, context, callback) => {
                 }
 	};
 	
+
 	const headers = {
       		"Access-Control-Allow-Origin": "*",
      		"Access-Control-Allow-Credentials": true};
@@ -111,5 +113,39 @@ module.exports.updateData = (event, context, callback) => {
 	      callback(new Error('Couldn\'t update text.'));
 	      return;
 	    });
+};
+
+module.exports.updateRunCount = (event, context, callback) => {
+
+  //update data in exisitng entry in the dynamoDB table by sessionID
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.DATA_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },
+    ExpressionAttributeNames: {'#runCount': 'runCount'}, //COLUMN NAME 
+    ExpressionAttributeValues: { ':inc': 1, ':start':0},
+    UpdateExpression: "SET #runCount = if_not_exists(#runCount, :start) + :inc"
+  }
+  
+  const headers = {
+          "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true};
+
+     dynamoDb.update(params).promise()
+      .then(result => {
+        const response = {
+          statusCode: 200,
+          headers: headers,
+          body: JSON.stringify(params.Item),
+        };
+        callback(null, response);
+      })
+      .catch(error => {
+        console.error(error);
+        callback(new Error('Couldn\'t update runCount.'));
+        return;
+      });
 };
 
