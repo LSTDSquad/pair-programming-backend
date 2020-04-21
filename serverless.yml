@@ -67,6 +67,32 @@ functions:
           method: put
           cors: true
 
+  updateConfusionCount:
+    handler: handler.updateConfusionCount
+    events:
+      - http:
+          path: updateConfusionCount/{id}
+          method: put
+          cors: true
+
+  updateToggleCount:
+    handler: handler.updateToggleCount
+    events:
+      - http:
+          path: updateToggleCount/{id}
+          method: put
+          cors: true
+
+  updateCommentCount:
+    handler: handler.updateCommentCount
+    events:
+      - http:
+          path: updateCommentCount/{id}
+          method: put
+          cors: true
+
+
+
 resources: # CloudFormation template syntax from here on.
   Resources:
     codeDynamoDBTable: 

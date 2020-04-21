@@ -86,10 +86,10 @@ module.exports.updateData = (event, context, callback) => {
 			id: event.pathParameters.id,
 		},
 		UpdateExpression: 'SET #text =:text',
-                ExpressionAttributeNames: {
+    ExpressionAttributeNames: {
                     '#text': 'text' //COLUMN NAME       
                 },
-                ExpressionAttributeValues: {
+    ExpressionAttributeValues: {
                     ':text': data.text
                 }
 	};
@@ -123,7 +123,7 @@ module.exports.updateRunCount = (event, context, callback) => {
     TableName: process.env.DATA_TABLE,
     Key: {
       id: event.pathParameters.id,
-    },
+    },   
     ExpressionAttributeNames: {'#runCount': 'runCount'}, //COLUMN NAME 
     ExpressionAttributeValues: { ':inc': 1, ':start':0},
     UpdateExpression: "SET #runCount = if_not_exists(#runCount, :start) + :inc"
@@ -145,6 +145,108 @@ module.exports.updateRunCount = (event, context, callback) => {
       .catch(error => {
         console.error(error);
         callback(new Error('Couldn\'t update runCount.'));
+        return;
+      });
+};
+
+module.exports.updateConfusionCount = (event, context, callback) => {
+
+  //update data in exisitng entry in the dynamoDB table by sessionID
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.DATA_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },   
+    ExpressionAttributeNames: {'#confusionCount': 'confusionCount'}, //COLUMN NAME 
+    ExpressionAttributeValues: { ':inc': 1, ':start':0},
+    UpdateExpression: "SET #confusionCount = if_not_exists(#confusionCount, :start) + :inc"
+  }
+  
+  const headers = {
+          "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true};
+
+     dynamoDb.update(params).promise()
+      .then(result => {
+        const response = {
+          statusCode: 200,
+          headers: headers,
+          body: JSON.stringify(params.Item),
+        };
+        callback(null, response);
+      })
+      .catch(error => {
+        console.error(error);
+        callback(new Error('Couldn\'t update confusionCount.'));
+        return;
+      });
+};
+
+module.exports.updateToggleCount = (event, context, callback) => {
+
+  //update data in exisitng entry in the dynamoDB table by sessionID
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.DATA_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },   
+    ExpressionAttributeNames: {'#toggleCount': 'toggleCount'}, //COLUMN NAME 
+    ExpressionAttributeValues: { ':inc': 1, ':start':0},
+    UpdateExpression: "SET #toggleCount = if_not_exists(#toggleCount, :start) + :inc"
+  }
+  
+  const headers = {
+          "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true};
+
+     dynamoDb.update(params).promise()
+      .then(result => {
+        const response = {
+          statusCode: 200,
+          headers: headers,
+          body: JSON.stringify(params.Item),
+        };
+        callback(null, response);
+      })
+      .catch(error => {
+        console.error(error);
+        callback(new Error('Couldn\'t update toggleCount.'));
+        return;
+      });
+};
+
+module.exports.updateCommentCount = (event, context, callback) => {
+
+  //update data in exisitng entry in the dynamoDB table by sessionID
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.DATA_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },   
+    ExpressionAttributeNames: {'#commentCount': 'commentCount'}, //COLUMN NAME 
+    ExpressionAttributeValues: { ':inc': 1, ':start':0},
+    UpdateExpression: "SET #commentCount = if_not_exists(#commentCount, :start) + :inc"
+  }
+  
+  const headers = {
+          "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true};
+
+     dynamoDb.update(params).promise()
+      .then(result => {
+        const response = {
+          statusCode: 200,
+          headers: headers,
+          body: JSON.stringify(params.Item),
+        };
+        callback(null, response);
+      })
+      .catch(error => {
+        console.error(error);
+        callback(new Error('Couldn\'t update commentCount.'));
         return;
       });
 };
