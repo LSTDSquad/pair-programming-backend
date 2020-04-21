@@ -1,0 +1,24 @@
+{
+  "name": "pair-programming-backend",
+  "version": "1.0.0",
+  "description": "This uses \"serverless\"",
+  "main": "handler.js",
+  "dependencies": {
+    "aws-sdk": "^2.635.0",
+    "uuid": "^7.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LSTDSquad/pair-programming-backend.git"
+  },
+  "author": "ethan roy and kaili wang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LSTDSquad/pair-programming-backend/issues"
+  },
+  "homepage": "https://github.com/LSTDSquad/pair-programming-backend#readme"
+}

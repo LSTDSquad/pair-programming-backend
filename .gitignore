@@ -17,4 +17,5 @@ var/
 *.egg
 
 # Serverless directories
+node_modules/
 .serverless
