@@ -26,7 +26,7 @@ provider:
   region: us-west-2
   timeout: 30
   environment:
-    DATA_TABLE: ${self:service}-data1
+    DATA_TABLE: ${self:service}-data2
   iamRoleStatements:
     - Effect: "Allow"
       Resource: "*"
@@ -88,6 +88,14 @@ functions:
     events:
       - http:
           path: updateCommentCount/{id}
+          method: put
+          cors: true
+
+  updateTimeStamps:
+    handler: handler.updateTimeStamps
+    events:
+      - http:
+          path: updateTimeStamps/{id}
           method: put
           cors: true
 
