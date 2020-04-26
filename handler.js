@@ -254,6 +254,7 @@ module.exports.updateCommentCount = (event, context, callback) => {
 module.exports.updateTimeStamps = (event, context, callback) => {
 
   //update data in exisitng entry in the dynamoDB table by sessionID
+  //test comment
   const data = JSON.parse(event.body);
   const params = {
     TableName: process.env.DATA_TABLE,
