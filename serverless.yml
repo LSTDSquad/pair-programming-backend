@@ -27,6 +27,7 @@ provider:
   timeout: 30
   environment:
     DATA_TABLE: ${self:service}-data2
+    USER_TABLE: ${self:service}-userTable
   iamRoleStatements:
     - Effect: "Allow"
       Resource: "*"
@@ -99,6 +100,14 @@ functions:
           method: put
           cors: true
 
+  updateSessions:
+    handler: userHandler.updateSessions
+    events:
+      - http:
+          path: updateSessions/{id}
+          method: put
+          cors: true
+
 
 
 resources: # CloudFormation template syntax from here on.
@@ -119,6 +128,23 @@ resources: # CloudFormation template syntax from here on.
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DATA_TABLE}
+    userDyanamoDBTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Delete
+      Properties:
+        AttributeDefinitions:
+          - 
+            AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - 
+            AttributeName: "id"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.USER_TABLE}
+
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
