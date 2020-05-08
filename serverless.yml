@@ -100,6 +100,14 @@ functions:
           method: put
           cors: true
 
+  updateChildren:
+    handler: handler.updateChildren
+    events:
+      - http:
+          path: updateChildren/{id}
+          method: put
+          cors: true
+
   updateSessions:
     handler: userHandler.updateSessions
     events:

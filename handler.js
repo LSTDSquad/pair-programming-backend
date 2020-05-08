@@ -286,3 +286,38 @@ module.exports.updateTimeStamps = (event, context, callback) => {
       });
 };
 
+module.exports.updateChildren = (event, context, callback) => {
+
+  //update data in exisitng entry in the dynamoDB table by sessionID
+  //test comment
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.DATA_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },   
+    ExpressionAttributeNames: {'#children': 'children'}, //COLUMN NAME 
+    ExpressionAttributeValues: { ':child': dynamoDb.createSet([data.child])},
+    UpdateExpression: "ADD #children :child"
+  }
+  
+  const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true};
+
+     dynamoDb.update(params).promise()
+      .then(result => {
+        const response = {
+          statusCode: 200,
+          headers: headers,
+          body: JSON.stringify(params.Item),
+        };
+        callback(null, response);
+      })
+      .catch(error => {
+        console.error(error);
+        callback(new Error('Couldn\'t update children.'));
+        return;
+      });
+};
+
