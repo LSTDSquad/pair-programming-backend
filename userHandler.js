@@ -31,7 +31,7 @@ module.exports.updateSessions = (event, context, callback) => {
         const response = {
           statusCode: 200,
           headers: headers,
-          body: JSON.stringify(params.Item),
+          body: JSON.stringify(params.Item.sessions),
         };
         callback(null, response);
       })

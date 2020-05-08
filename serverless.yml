@@ -116,6 +116,14 @@ functions:
           method: put
           cors: true
 
+  getSessions:
+    handler: homeHandler.getSessions
+    events:
+      - http:
+          path: getSessions/{id}
+          method: get
+          cors: true     
+
 
 
 resources: # CloudFormation template syntax from here on.
