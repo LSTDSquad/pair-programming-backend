@@ -154,6 +154,38 @@ module.exports.updateName = (event, context, callback) => {
       });
 };
 
+module.exports.getName = (event, context, callback) => {
+
+  //load data from exisitng entry in the dynamoDB table by sessionID
+
+  const params = {
+    TableName: process.env.DATA_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },
+  };
+  const headers = {
+          "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true};
+
+  dynamoDb.get(params).promise()
+    .then(result => {
+      const response = {
+        statusCode: 200,
+        headers: headers,
+        body: JSON.stringify(result.Item.name),
+      };
+      callback(null, response);
+    })
+    .catch(error => {
+      console.error(error);
+      callback(new Error('Couldn\'t fetch text.'));
+      return;
+    });
+};
+
+
+
 module.exports.updateRunCount = (event, context, callback) => {
 
   //update data in exisitng entry in the dynamoDB table by sessionID
