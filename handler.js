@@ -115,6 +115,45 @@ module.exports.updateData = (event, context, callback) => {
 	    });
 };
 
+module.exports.updateName = (event, context, callback) => {
+
+  //update data in exisitng entry in the dynamoDB table by sessionID
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.DATA_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },
+    UpdateExpression: 'SET #name =:name',
+    ExpressionAttributeNames: {
+                    '#name': 'name' //COLUMN NAME       
+                },
+    ExpressionAttributeValues: {
+                    ':name': data.name
+                }
+  };
+  
+
+  const headers = {
+          "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true};
+
+     dynamoDb.update(params).promise()
+      .then(result => {
+        const response = {
+          statusCode: 200,
+          headers: headers,
+          body: JSON.stringify(params.Item),
+        };
+        callback(null, response);
+      })
+      .catch(error => {
+        console.error(error);
+        callback(new Error('Couldn\'t update name.'));
+        return;
+      });
+};
+
 module.exports.updateRunCount = (event, context, callback) => {
 
   //update data in exisitng entry in the dynamoDB table by sessionID

@@ -60,6 +60,14 @@ functions:
           method: put
           cors: true
 
+  updateName:
+    handler: handler.updateName
+    events:
+      - http:
+          path: updateName/{id}
+          method: put
+          cors: true
+
   updateRunCount:
     handler: handler.updateRunCount
     events:
