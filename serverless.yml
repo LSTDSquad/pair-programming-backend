@@ -60,6 +60,14 @@ functions:
           method: put
           cors: true
 
+  updateLastEdit:
+    handler: handler.updateLastEdit
+    events:
+      - http:
+          path: updateLastEdit/{id}
+          method: put
+          cors: true
+
   updateName:
     handler: handler.updateName
     events:
@@ -138,8 +146,23 @@ functions:
       - http:
           path: getSessions/{id}
           method: get
-          cors: true     
+          cors: true
 
+  getChildren: 
+    handler: homeHandler.getChildren
+    events:
+      - http:
+          path: getChildren/{id}
+          method: get
+          cors: true 
+
+  getLastEdit: 
+    handler: homeHandler.getLastEdit
+    events:
+      - http:
+          path: getLastEdit/{id}
+          method: get
+          cors: true 
 
 
 resources: # CloudFormation template syntax from here on.
