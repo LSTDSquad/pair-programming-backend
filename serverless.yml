@@ -124,6 +124,14 @@ functions:
           method: put
           cors: true
 
+  updateSessionLength:
+    handler: handler.updateSessionLength
+    events:
+      - http:
+          path: updateSessionLength/{id}
+          method: put
+          cors: true
+
   updateChildren:
     handler: handler.updateChildren
     events:

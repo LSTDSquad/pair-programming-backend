@@ -391,7 +391,42 @@ module.exports.updateTimeStamps = (event, context, callback) => {
       })
       .catch(error => {
         console.error(error);
-        callback(new Error('Couldn\'t update timestampse.'));
+        callback(new Error('Couldn\'t update timestamps.'));
+        return;
+      });
+};
+
+module.exports.updateSessionLength = (event, context, callback) => {
+
+  //update data in exisitng entry in the dynamoDB table by sessionID
+  //test comment
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.DATA_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },   
+    ExpressionAttributeNames: {'#sessionLength': 'sessionLength'}, //COLUMN NAME 
+    ExpressionAttributeValues: { ':session': [data], ':start':[]},
+    UpdateExpression: "SET #sessionLength = list_append(if_not_exists(#sessionLength, :start), :session)"
+  }
+  
+  const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true};
+
+     dynamoDb.update(params).promise()
+      .then(result => {
+        const response = {
+          statusCode: 200,
+          headers: headers,
+          body: JSON.stringify(params.Item),
+        };
+        callback(null, response);
+      })
+      .catch(error => {
+        console.error(error);
+        callback(new Error('Couldn\'t update session length.'));
         return;
       });
 };
