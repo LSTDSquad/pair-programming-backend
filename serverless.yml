@@ -24,6 +24,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-west-2
+  profile: admin
   timeout: 30
   environment:
     DATA_TABLE: ${self:service}-data2
