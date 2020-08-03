@@ -125,6 +125,14 @@ functions:
           method: put
           cors: true
 
+  updateChat:
+    handler: handler.updateChat
+    events:
+      - http:
+          path: updateChat/{id}
+          method: put
+          cors: true
+
   updateSessionLength:
     handler: handler.updateSessionLength
     events:

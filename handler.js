@@ -396,6 +396,41 @@ module.exports.updateTimeStamps = (event, context, callback) => {
       });
 };
 
+module.exports.updateChat = (event, context, callback) => {
+
+  //update data in exisitng entry in the dynamoDB table by sessionID
+  //test comment
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.DATA_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },   
+    ExpressionAttributeNames: {'#chat': 'chat'}, //COLUMN NAME 
+    ExpressionAttributeValues: { ':message': [data], ':start':[]},
+    UpdateExpression: "SET #chat = list_append(if_not_exists(#chat, :start), :message)"
+  }
+  
+  const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true};
+
+     dynamoDb.update(params).promise()
+      .then(result => {
+        const response = {
+          statusCode: 200,
+          headers: headers,
+          body: JSON.stringify(params.Item),
+        };
+        callback(null, response);
+      })
+      .catch(error => {
+        console.error(error);
+        callback(new Error('Couldn\'t update chat.'));
+        return;
+      });
+};
+
 module.exports.updateSessionLength = (event, context, callback) => {
 
   //update data in exisitng entry in the dynamoDB table by sessionID
