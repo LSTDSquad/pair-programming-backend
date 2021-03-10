@@ -10,6 +10,10 @@ export AWS_SECRET_ACCESS_KEY= <yours>
 
 serverless deploy
 
+troubleshoot:
+  "aws profile doesn't seem to be configured"
+    you must go to ~/.aws/credentials and make sure your profile name is the specificed name serverless is looking for. 
+
 => gives you URLS that you can send requests to
 
 Then you can send HTTP requests from react. Here is an example 

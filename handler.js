@@ -397,7 +397,7 @@ module.exports.updateTimeStamps = (event, context, callback) => {
       const response = {
         statusCode: 200,
         headers: headers,
-        body: JSON.stringify(params.Item),
+        body: JSON.stringify(result.Item),
       };
       callback(null, response);
     })

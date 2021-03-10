@@ -33,13 +33,12 @@ module.exports.updateSessions = (event, context, callback) => {
       const response = {
         statusCode: 200,
         headers: headers,
-        body: JSON.stringify(params.Item.sessions),
+        body: JSON.stringify(result.Item),
       };
       callback(null, response);
     })
     .catch(error => {
-      console.error(error);
-      callback(new Error('Couldn\'t update sessions.'));
+      callback({message: 'unable to update session.', event});
       return;
     });
 };
